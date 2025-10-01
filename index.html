@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Snapshot: Olivia Davis</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #f4f7fa;
+            --card-bg-color: #ffffff;
+            --text-color: #1d2d35;
+            --text-muted-color: #6c757d;
+            --primary-color: #0052cc;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --red-alert: #d93025;
+            --yellow-alert: #fbbc04;
+            --blue-alert: #1a73e8;
+            --green-alert: #34a853;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(12, 1fr);
+        }
+
+        /* --- Header --- */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .customer-info h1 {
+            margin: 0 0 5px 0;
+            font-size: 28px;
+        }
+
+        .customer-info p {
+            margin: 0;
+            color: var(--text-muted-color);
+            font-size: 16px;
+        }
+
+        /* --- Alerts Section --- */
+        .alerts {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .alert-flag {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .alert-flag i {
+            margin-right: 8px;
+        }
+        
+        /* Alert Colors */
+        .alert-hnw { background-color: var(--green-alert); color: white; }
+        .alert-fraud { background-color: var(--red-alert); color: white; }
+        .alert-churn { background-color: var(--yellow-alert); color: var(--text-color); }
+        .alert-complaint { background-color: var(--red-alert); color: white; }
+        .alert-maturity { background-color: var(--blue-alert); color: white; }
+
+
+        /* --- Card Styles --- */
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            grid-column: span 6; /* Default to half-width */
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Account Details Styles */
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .account-item:last-child {
+            border-bottom: none;
+        }
+
+        .account-name {
+            font-weight: 500;
+        }
+        .account-name span {
+            display: block;
+            font-weight: 400;
+            font-size: 14px;
+            color: var(--text-muted-color);
+        }
+
+        .account-balance {
+            font-size: 22px;
+            font-weight: 500;
+            text-align: right;
+        }
+        .account-balance span {
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-muted-color);
+        }
+        
+        .account-balance.positive { color: #2e7d32; }
+        .account-balance.negative { color: #c62828; }
+
+        /* Investment Card */
+        .investment-card {
+            grid-column: span 12; /* Full-width */
+        }
+        
+        /* Chart container to fix rendering glitch */
+        .chart-container {
+            position: relative;
+            height: 300px; /* Explicit height */
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .card { grid-column: span 12; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="customer-info">
+                <h1>Olivia Davis</h1>
+                <p>Customer ID: 8675309</p>
+            </div>
+        </header>
+
+        <!-- Key Alerts & Flags -->
+        <section class="alerts">
+            <div class="alert-flag alert-hnw">
+                <i class="fa-solid fa-gem"></i> High Net Worth Client
+            </div>
+            <div class="alert-flag alert-fraud">
+                <i class="fa-solid fa-shield-virus"></i> Fraud Alert on Account
+            </div>
+            <div class="alert-flag alert-churn">
+                <i class="fa-solid fa-arrow-trend-down"></i> At Risk of Churn
+            </div>
+            <div class="alert-flag alert-complaint">
+                <i class="fa-solid fa-triangle-exclamation"></i> Recent Complaint Filed
+            </div>
+             <div class="alert-flag alert-maturity">
+                <i class="fa-solid fa-calendar-check"></i> CD Maturing: Oct 25, 2025
+            </div>
+        </section>
+
+        <!-- Deposit Accounts -->
+        <div class="card">
+            <h2 class="card-title"><i class="fa-solid fa-dollar-sign"></i>Checking & Savings</h2>
+            <div class="account-item">
+                <div class="account-name">Total Checking <span>(...4321)</span></div>
+                <div class="account-balance positive">$15,230.55</div>
+            </div>
+            <div class="account-item">
+                <div class="account-name">High-Yield Savings <span>(...8765)</span></div>
+                <div class="account-balance positive">$88,100.12</div>
+            </div>
+        </div>
+
+        <!-- Credit Cards -->
+        <div class="card">
+            <h2 class="card-title"><i class="fa-solid fa-credit-card"></i>Credit Cards</h2>
+            <div class="account-item">
+                <div class="account-name">Sapphire Rewards Visa <span>(...1122)</span></div>
+                <div class="account-balance negative">
+                    $2,450.78 <span>Available: $17,549.22</span>
+                </div>
+            </div>
+             <div class="account-item">
+                <div class="account-name">Freedom Unlimited MC <span>(...3344)</span></div>
+                <div class="account-balance negative">
+                    $0.00 <span>Available: $10,000.00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loans -->
+        <div class="card">
+            <h2 class="card-title"><i class="fa-solid fa-house-chimney"></i>Loans</h2>
+            <div class="account-item">
+                <div class="account-name">Mortgage <span>(30-Year Fixed ...5566)</span></div>
+                <div class="account-balance">
+                    $285,420.11 <span>Next Payment: Nov 1, 2025</span>
+                </div>
+            </div>
+            <div class="account-item">
+                <div class="account-name">Auto Loan <span>(2023 SUV ...7788)</span></div>
+                <div class="account-balance">
+                    $21,880.95 <span>Next Payment: Oct 15, 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Portfolio -->
+        <div class="card investment-card">
+            <h2 class="card-title"><i class="fa-solid fa-chart-line"></i>Investment Portfolio</h2>
+            <div class="account-item">
+                <div class="account-name">Retirement Portfolio <span>(...9900)</span></div>
+                <div class="account-balance positive">
+                    $450,123.45 <span>YTD Change: +$45,321.80 (11.2%)</span>
+                </div>
+            </div>
+            <!-- EDITED: Added a wrapper div with a defined height to prevent chart from collapsing -->
+            <div class="chart-container">
+                <canvas id="investmentChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvasElement = document.getElementById('investmentChart');
+            if (canvasElement) { // Check if the canvas element exists before creating chart
+                const ctx = canvasElement.getContext('2d');
+                
+                // Gradient fill for the chart area
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(0, 82, 204, 0.5)');
+                gradient.addColorStop(1, 'rgba(0, 82, 204, 0)');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                        datasets: [{
+                            label: 'Portfolio Value',
+                            data: [350000, 365000, 380000, 375000, 405000, 415000, 430000, 420000, 445000, 450123],
+                            borderColor: 'rgba(0, 82, 204, 1)',
+                            backgroundColor: gradient,
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: 'rgba(0, 82, 204, 1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + (value / 1000) + 'k';
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
